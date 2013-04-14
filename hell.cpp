@@ -20,6 +20,7 @@ int level=0;
 int current_drag[4] = {-1};	//l->r:0 r->l:1 l->l:2 r->r:3 else -1
 IplImage *quarter[100];
 IplImage *white;
+IplImage *win;
 IplImage* jumbled=0;
 int over = 0;
 char num[100] = "Number of Steps = ";
@@ -103,14 +104,7 @@ else
                 cvResize(quarter[final[i][0]], jumbled);
 		     cvResetImageROI(jumbled);
 
-		cvSetImageROI(jumbled, cvRect(initial[current_drag[0]][1],initial[current_drag[0]][2],initial[current_drag[0]][3]-initial[current_drag[0]][1],initial[current_drag[0]][4]-initial[current_drag[0]][2]));
-
-                cvResize(white, jumbled);
-
-		     cvResetImageROI(jumbled);
 		
- 		  cvShowImage("mainWin", jumbled);
-
 		for(int j=0;j<level*level;j++)
 			{
 			if(final[j][0]!=j)
@@ -118,14 +112,33 @@ else
 			
 			}
 
-		if(flag==1)
-		{	over = 1;	
-			cv::addText( jumbled,"You Win", cv::Point(500,550), font);
+		if(flag == 0){
+		cvSetImageROI(jumbled, cvRect(initial[current_drag[0]][1],initial[current_drag[0]][2],initial[current_drag[0]][3]-initial[current_drag[0]][1],initial[current_drag[0]][4]-initial[current_drag[0]][2]));
+
+                cvResize(white, jumbled);
+
+		     cvResetImageROI(jumbled);
+		
+ 		  cvShowImage("mainWin", jumbled);
+		}
+
+		else if(flag==1)
+		{	over = 1;
+
+
+			cvSetImageROI(jumbled, cvRect(initial[0][1],initial[0][2],initial[level*level-1][3]-initial[0][1],initial[level*level-1][4]-initial[0][2]));
+
+                cvResize(win, jumbled);
+
+		     cvResetImageROI(jumbled);
+		
+ 		  cvShowImage("mainWin", jumbled);	
+/*			cv::addText( jumbled,"You Win", cv::Point(500,550), font);
 			
 			cvResetImageROI(jumbled);
 			
  		  cvShowImage("mainWin", jumbled);	
-			//cvReleaseImage(&jumbled);
+*/			//cvReleaseImage(&jumbled);
 			
 			
 
@@ -250,6 +263,7 @@ int main(int argc, char *argv[])
 	IplImage* img = 0; 
 	//IplImage* jumbled=0;
 	white=cvLoadImage("white.jpg");	//loading image 	
+	win=cvLoadImage("win.jpg");
 	int height,width,step,channels;
 	uchar *data;
 	int i,j,k,done=0,space=2;
@@ -362,12 +376,12 @@ int main(int argc, char *argv[])
 	}
 
 	// inserting white tiles on right side of window
-	for(i=0,m=space,n=space;i<level*level;i++,m+=(space+size))
+	for(i=0,m=0,n=0;i<level*level;i++,m+=(0+size))
 	{
-		if (i%w==0 && m!=space)
+		if (i%w==0 && m!=0)
 		{
-			m=space;
-			n+=(space+size);
+			m=0;
+			n+=size;
 		}
 		putvalue(1,i,-1,600+m+gap,n+gap,600+m+wid+gap,n+hei+gap);
 
