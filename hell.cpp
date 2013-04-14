@@ -258,7 +258,7 @@ final[i][1]=x1;
 }
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	IplImage* img = 0; 
 	//IplImage* jumbled=0;
@@ -269,24 +269,30 @@ int main(int argc, char *argv[])
 	int i,j,k,done=0,space=2;
 	int start =0;
 	int totalimg = 6;
+	char name[100]; 
 
+	printf("Enter the level:\n1 for 2x2 puzzle\n2 for 3x3 puzzle\n.\n.\nmaximum level allowed is 9\n");
+	scanf("%d",&level);
+
+	
+
+	if(level>9 || level<0)
+		{
+		printf("Level not allowed\n");
+		exit(0);
+	}
 	char images[6][20] = {"fruits.jpg","cartoon1.jpg","cartoon2.jpg","cartoon3.jpg","house.jpg","nature.jpg"};
 
 
 	srand(time(NULL));
 
-	if(argc<1){
-		printf("Please enter the level\n\7");
-		exit(0);
-	}
+	
 
 	int randimage = rand()%totalimg;	
 	// load an image  
 	img=cvLoadImage(images[randimage]);
 	img=img_resize(img,500,500);
 	
-
-	level= atoi(argv[1]);	
 	level+=1;
 
 	initial = (int **) malloc(sizeof(int *)*(level*level));
@@ -410,15 +416,15 @@ int main(int argc, char *argv[])
 	// Set up the callback
 
 	// create a window
+	CvFont font = cv::fontQt("Times",15,CV_RGB(255,255,255));
+	cv::addText(jumbled,"Drag drop to move pictures", cv::Point(700,40), font);
 	
 	while(1)
 	{
-//     cvResetImageROI(jumbled);
+	//     cvResetImageROI(jumbled);
 
 	cv::displayOverlay("mainWin", "JIG-SAW PUZZLE", 0);
-
 	
-	CvFont font = cv::fontQt("Times",15,CV_RGB(255,255,255));
 
 	cvShowImage("mainWin", jumbled);
 	
@@ -429,7 +435,7 @@ int main(int argc, char *argv[])
 	}
 	cvWaitKey(0);
 	
-	cvReleaseImage(&jumbled);
+	//cvReleaseImage(&jumbled);
 	
 	}
 	return 0;
