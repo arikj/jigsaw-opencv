@@ -254,9 +254,9 @@ int main(int argc, char *argv[])
 	uchar *data;
 	int i,j,k,done=0,space=2;
 	int start =0;
-	int totalimg = 4;
+	int totalimg = 6;
 
-	char images[4][20] = {"fruits.jpg","scrn1.png","arihant.jpg","girl.jpg"};
+	char images[6][20] = {"fruits.jpg","cartoon1.jpg","cartoon2.jpg","cartoon3.jpg","house.jpg","nature.jpg"};
 
 
 	srand(time(NULL));
